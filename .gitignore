@@ -1,0 +1,13 @@
+*.o
+*.obj
+*.exe
+*.suo
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.cache
+*.ncb
+*.scc
+*.sln.docstates
+vigenerjeva_sifra.cpp
+.vscode
