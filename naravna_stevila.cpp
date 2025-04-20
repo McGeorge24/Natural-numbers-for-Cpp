@@ -33,7 +33,7 @@ public:
     {
         return integer.size();
     }
-
+    
     // operatorji
     /*InfiniteInt operator++()
     {
