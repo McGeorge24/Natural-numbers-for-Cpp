@@ -2,16 +2,15 @@
 #include <vector>
 #include <string>
 #include <string.h>
+#include <stdio.h>
 
-class InfiniteInt
+class Integer
 {
 private:
     // the actual integer is saved in a vector of chars, each representing one digit
     std::vector<char> integer;
 
-public:
-    // initialization from char array
-    InfiniteInt(const char *stevilo)
+    void InitFromString(const char *stevilo)
     {
         int i = 0;
         int length = strlen(stevilo);
@@ -23,8 +22,28 @@ public:
             // because integers must be aligned with the right most digit for addition
             integer.push_back(stevilo[length - 1 - i] - 48);
         }
+    }
+
+public:
+    // initialization from char array
+    Integer()
+    {
+        integer.push_back(0);
+    }
+
+    Integer(const char *stevilo)
+    {
+        InitFromString(stevilo);
     };
-    InfiniteInt(InfiniteInt &ref)
+
+    Integer(const int stevilo)
+    {
+        char buffer[20]; // mislim da je max velikost inta okoli 10^18
+        sprintf(buffer, "%d", stevilo);
+        InitFromString(buffer);
+    };
+
+    Integer(Integer &ref)
     {
         integer = ref.integer;
     }
@@ -33,15 +52,19 @@ public:
     {
         return integer.size();
     }
-    
-    // operatorji
-    /*InfiniteInt operator++()
-    {
-    }*/
 
-    InfiniteInt operator+(const InfiniteInt &other)
+    // operatorji
+    Integer operator++(int)
     {
-        InfiniteInt new_int(""); // initialize the return value
+        Integer temp = *this;
+        Integer int1("1");
+        temp = temp + int1;
+        return temp;
+    }
+
+    Integer operator+(const Integer &other)
+    {
+        Integer new_int(""); // initialize the return value
         int min_length, max_length;
         std::vector<char>::const_iterator itr, end;
         // copy from ITR to END from the bigger integer to the new_integer and push back carry
@@ -91,19 +114,26 @@ public:
         return new_int;
     }
 
-    InfiniteInt& operator=(const InfiniteInt& other) {
-        if (this == &other) {
-            return *this; // Handle self-assignment
+    Integer operator*(Integer const& other)
+    {
+        return Integer(1);
+    }
+
+    /*
+        Integer& operator=(const std::string& string) {
+            Integer temp(string.c_str());
+            *this = temp;
+            return *this; // Return a reference to the current object
         }
-        return *this; // Return a reference to the current object
-    }
 
-    InfiniteInt& operator=(const std::string& other) {
-        
-
-        return *this; // Return a reference to the current object
-    }
-
+        Integer& operator=(const int& integer) {
+            char buffer[20];
+            sprintf(buffer, "%d", integer);
+            Integer temp(buffer);
+            *this = temp;
+            return *this; // Return a reference to the current object
+        }
+    */
     void print()
     {
         for (int i = 0; i < integer.size(); i++)
@@ -115,13 +145,28 @@ public:
 
 int main()
 {
-    InfiniteInt integer("6574839565");
-    InfiniteInt int2("3673895734534");
+    Integer integer("6574839565");
+    Integer int2("3673895734534");
     integer.print();
     printf("\n+");
     int2.print();
     printf("\n");
-    integer = int2 + integer;
+    integer = integer + int2;
     integer.print();
+    printf("\n");
+    integer++;
+    integer.print();
+    printf("\n----------------\n");
+    Integer int3 = "123";
+    int3.print();
+    printf("\n----------------\n");
+    Integer int4;
+    int4.print();
+    printf("\n");
+    int4 = 456;
+    int4.print();
+    printf("\n");
+    int4 = int4 * int3;
+    int4.print();
     return 0;
 }
